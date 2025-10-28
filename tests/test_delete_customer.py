@@ -1,6 +1,9 @@
 import allure
 import pytest
+from selenium.webdriver.remote.webdriver import WebDriver
 
+from src.actions.manager_actions import CustomerActions as CA
+from src.schema.customer import Customer
 from src.services.customer_service import find_name_closest_to_average_length
 from .base_ui_test import BaseUITest
 
@@ -19,16 +22,16 @@ class TestDeleteCustomer(BaseUITest):
     к среднему арифметическому  в приложении XYZ Bank."""
 
     @allure.title("TC-003: Удаление клиента, длина имени ближе к среднему")
-    def test_delete_customer_closest_to_avg(self, customer_actions, data_generator):
-        # убедимся, что минимум 3 клиента есть
+    def test_delete_customer_closest_to_avg(self, driver: WebDriver):
+        customer_actions = CA(driver)
+
         names = customer_actions.get_all_first_names()
         if len(names) < 3:
             for _ in range(3 - len(names)):
-                pc = data_generator.generate_post_code()
-                fn = data_generator.generate_first_name(pc)
-                customer_actions.create_customer(fn, "L", pc)
-            names = customer_actions.get_all_first_names()
+                customer = Customer.random()
+                customer_actions.create_customer(customer)
 
+        names = customer_actions.get_all_first_names()
         name_to_delete = find_name_closest_to_average_length(names)
         customer_actions.delete_customer_by_name(name_to_delete)
 

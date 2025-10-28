@@ -1,6 +1,3 @@
-import allure
-
-
 class BaseUITest:
     """
     Базовый класс для UI тестов.

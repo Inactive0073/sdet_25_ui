@@ -1,6 +1,9 @@
 import allure
 import pytest
+from selenium.webdriver.remote.webdriver import WebDriver
 
+from src.actions.manager_actions import CustomerActions as CA
+from src.schema.customer import Customer
 from .base_ui_test import BaseUITest
 
 
@@ -14,23 +17,20 @@ from .base_ui_test import BaseUITest
 @pytest.mark.ui
 class TestSorting(BaseUITest):
     @allure.title("TC-002: Проверка сортировки First Name A→Z и Z→A")
-    def test_sorting_by_first_name(self, customer_actions, data_generator):
-        # Добавим несколько клиентов, чтобы гарантировать данные
-        for _ in range(3):
-            pc = data_generator.generate_post_code()
-            fn = data_generator.generate_first_name(pc)
-            customer_actions.create_customer(fn, "L", pc)
+    def test_sorting_by_first_name(self, driver: WebDriver):
+        customer_actions = CA(driver)
 
-        # Проверка сортировки
-        customer_actions.open_customers_list()
+        # наполнение тестовыми данными
+        customer_actions.ensure_customers_exist(3)
+
         # клик для сортировки A->Z
-        customer_actions.customers.click_first_name_header()
-        names_asc = customer_actions.customers.get_all_first_names()
-        assert names_asc == sorted(names_asc), f"Ожидали A->Z, получили: {names_asc}"
+        names_desc = customer_actions.get_names_sorted_desc()
+        assert customer_actions.is_sorted_desc(names_desc), (
+            f"Ожидали Z->A, получили: {names_desc}"
+        )
 
         # клик для сортировки Z->A
-        customer_actions.customers.click_first_name_header()
-        names_desc = customer_actions.customers.get_all_first_names()
-        assert names_desc == sorted(names_desc, reverse=True), (
-            f"Ожидали Z->A, получили: {names_desc}"
+        names_asc = customer_actions.get_names_sorted_asc()
+        assert customer_actions.is_sorted_asc(names_asc), (
+            f"Ожидали A->Z, получили: {names_asc}"
         )
