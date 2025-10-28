@@ -1,1 +1,3 @@
-from .customer import *
+from .customer import Customer
+
+__all__ = ["Customer"]

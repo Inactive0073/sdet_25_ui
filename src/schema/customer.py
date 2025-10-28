@@ -1,8 +1,10 @@
 from dataclasses import dataclass
 from faker import Faker
-from utils.data_generator import generate_post_code, generate_first_name
+
+from src.utils.data_generator import generate_post_code, generate_first_name
 
 fake = Faker("en_US")
+
 
 @dataclass
 class Customer:
