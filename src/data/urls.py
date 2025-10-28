@@ -1,14 +1,5 @@
-from dataclasses import dataclass
-
-
-@dataclass
 class URLs:
-    LOGIN_URL: str = (
-        "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login"
-    )
-    MANAGER_URL: str = (
-        "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/manager"
-    )
-    CUSTOMER_URL: str = (
-        "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/customer"
-    )
+    BASE_URL: str = "https://www.globalsqa.com/angularJs-protractor/BankingProject"
+    LOGIN_URL: str = f"{BASE_URL}/#/login"
+    MANAGER_URL: str = f"{BASE_URL}/#/manager"
+    CUSTOMER_URL: str = f"{BASE_URL}/#/customer"

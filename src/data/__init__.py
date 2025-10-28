@@ -1,2 +1,3 @@
-from test_data import *
-from urls import *
+from .urls import URLs
+
+__all__ = ["URLs"]
