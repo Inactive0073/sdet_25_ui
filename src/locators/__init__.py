@@ -1,1 +1,1 @@
-from .feedback_page_loc import *
+from .manager_loc import ManagerLocators

@@ -1,8 +1,6 @@
-from dataclasses import dataclass
 from selenium.webdriver.common.by import By
 
 
-@dataclass
 class ManagerLocators:
     BANK_MANAGER_LOGIN_BUTTON = (
         By.XPATH,
@@ -10,11 +8,10 @@ class ManagerLocators:
     )  # Доступна при авторизации
 
     ADD_CUSTOMER_BUTTON = (By.XPATH, "//button[@ng-click='addCust()']")
-    OPEN_CUSTOMERS_BUTTON = (By.XPATH, "//button[@ng-click='openAccount()']")
+    OPEN_ACCOUNT_BUTTON = (By.XPATH, "//button[@ng-click='openAccount()']")
     CUSTOMERS_LIST_BUTTON = (By.XPATH, "//button[@ng-click='showCust()']")
 
 
-@dataclass
 class AddCustomerLocators(ManagerLocators):
     FIRST_NAME_INPUT = (By.XPATH, "//input[@ng-model='fName']")
     LAST_NAME_INPUT = (By.XPATH, "//input[@ng-model='lName']")
@@ -22,11 +19,11 @@ class AddCustomerLocators(ManagerLocators):
     SUBMIT_ADD_CUSTOMER_BUTTON = (By.XPATH, "//button[@type='submit']")
 
 
-@dataclass
 class CustomersListLocators(ManagerLocators):
-    CUSTOMER_ROWS = (By.CSS_SELECTOR, "tr.ng-scope")
+    # target rows inside the customers table body to avoid picking up unrelated <tr> elements
+    CUSTOMER_ROWS = (By.XPATH, "//table//tbody//tr")
     SEARCH_INPUT = (By.CSS_SELECTOR, "input[ng-model='searchCustomer']")
-    FIRST_NAME_HEADER = (By.XPATH, "//thead/tr[1]/td[1]")
+    FIRST_NAME_HEADER = (By.XPATH, "//thead/tr[1]/td[1]/a")
 
     # selectors in table
     FIRST_NAME_CELL = (By.XPATH, "./td[1]")
