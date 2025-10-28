@@ -9,6 +9,8 @@ from selenium.webdriver.remote.webdriver import WebDriver
 
 from webdriver_manager.chrome import ChromeDriverManager
 
+from src.utils.config import get_test_config
+
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -19,11 +21,11 @@ def pytest_addoption(parser):
     )
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def driver(request: pytest.FixtureRequest) -> Generator[WebDriver, Any, Any]:
     browser = request.config.getoption("--browser")
     headless = request.config.getoption("--headless")
-
+    test_config = get_test_config()
     if browser == "chrome":
         chrome_options = ChromeOptions()
         if headless:
@@ -33,12 +35,15 @@ def driver(request: pytest.FixtureRequest) -> Generator[WebDriver, Any, Any]:
         chrome_options.add_argument("--no-sandbox")
         chrome_service = ChromeService(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+        driver.set_page_load_timeout(test_config.page_load_timeout)
+        driver.implicitly_wait(test_config.implicit_wait)
+
     else:
         raise ValueError("Only chrome is supported in this case")
 
-    driver.implicitly_wait(10)
     yield driver
-    driver.quit()
+    with allure.step("Закрываем браузер"):
+        driver.quit()
 
 
 @pytest.hookimpl(hookwrapper=True)
