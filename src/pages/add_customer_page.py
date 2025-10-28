@@ -5,8 +5,6 @@ from src.locators.manager_loc import AddCustomerLocators as ACL
 
 
 class AddCustomerPage(BasePage):
-    
-    OPEN_CUSTOMERS_BUTTON = ACL.OPEN_CUSTOMERS_BUTTON
     FIRST_NAME_INPUT = ACL.FIRST_NAME_INPUT
     LAST_NAME_INPUT = ACL.LAST_NAME_INPUT
     POSTAL_CODE_INPUT = ACL.POSTAL_CODE_INPUT

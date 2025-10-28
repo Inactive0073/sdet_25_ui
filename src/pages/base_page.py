@@ -12,6 +12,7 @@ from selenium.common.exceptions import (
 
 PageT = TypeVar("PageT", bound="BasePage")
 
+
 class BasePage(Generic[PageT]):
     def __init__(self, driver: WebDriver, timeout: int = 10) -> None:
         self.driver = driver
