@@ -1,3 +1,5 @@
+import tempfile
+import uuid
 import pytest
 import allure
 from typing import Any, Generator
@@ -33,6 +35,12 @@ def driver(request: pytest.FixtureRequest) -> Generator[WebDriver, Any, Any]:
             chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--window-size=1920,1080")
         chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-extensions")
+        chrome_options.add_argument("--disable-notifications")
+        chrome_options.add_argument("--disable-infobars")
+        chrome_options.add_argument("--disable-popup-blocking")
+        user_data_dir = tempfile.mkdtemp(prefix=f"chrome-profile-{uuid.uuid4()}-")
+        chrome_options.add_argument(f"--user-data-dir={user_data_dir}")
         chrome_service = ChromeService(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
         driver.set_page_load_timeout(test_config.page_load_timeout)
