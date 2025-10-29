@@ -3,7 +3,6 @@ import pytest
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from src.actions.manager_actions import CustomerActions as CA
-from src.schema.customer import Customer
 from .base_ui_test import BaseUITest
 
 

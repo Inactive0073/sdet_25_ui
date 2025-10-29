@@ -1,5 +1,4 @@
 # pages/customers_list_page.py
-from selenium.webdriver.common.by import By
 from src.pages.base_page import BasePage
 import allure
 from typing import List
