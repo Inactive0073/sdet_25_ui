@@ -28,6 +28,8 @@ def driver(request: pytest.FixtureRequest) -> Generator[WebDriver, Any, Any]:
     browser = request.config.getoption("--browser")
     headless = request.config.getoption("--headless")
     test_config = get_test_config()
+    if "windows" not in test_config.os:
+        headless = True
     if browser == "chrome":
         chrome_options = ChromeOptions()
         if headless:
