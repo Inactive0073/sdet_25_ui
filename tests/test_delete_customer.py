@@ -25,11 +25,8 @@ class TestDeleteCustomer(BaseUITest):
     def test_delete_customer_closest_to_avg(self, driver: WebDriver):
         customer_actions = CA(driver)
 
-        names = customer_actions.get_all_first_names()
-        if len(names) < 3:
-            for _ in range(3 - len(names)):
-                customer = Customer.random()
-                customer_actions.create_customer(customer)
+        # наполнение тестовыми данными
+        customer_actions.ensure_customers_exist(3)
 
         names = customer_actions.get_all_first_names()
         name_to_delete = find_name_closest_to_average_length(names)
