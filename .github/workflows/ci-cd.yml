@@ -9,6 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-22.04
+
     strategy:
       matrix:
         python-version: ["3.10"]
@@ -16,6 +17,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      # Устанавливаем Chrome
+      - name: Install Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable || true
+          sudo apt-get install -y chromium-browser || true
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -27,9 +35,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # Прогреваем WebDriverManager (скачиваем драйвер заранее)
+      - name: Pre-download driver
+        run: python -c "from webdriver_manager.chrome import ChromeDriverManager; ChromeDriverManager().install()"
+
       - name: Run tests and collect Allure results
-        run: |
-          pytest --alluredir=allure-results -q
+        env:
+          WDM_LOG_LEVEL: 0
+          WDM_LOCAL: 1
+        run: pytest --alluredir=allure-results -q -n auto
 
       - name: Upload Allure results as artifact
         uses: actions/upload-artifact@v4
@@ -48,5 +62,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./allure-report
-      
-      
