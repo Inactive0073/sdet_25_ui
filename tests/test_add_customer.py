@@ -2,10 +2,9 @@ import allure
 import pytest
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from tests.base_ui_test import BaseUITest
-
 from src.actions.manager_actions import CustomerActions as CA
 from src.schema.customer import Customer
+from tests.assert_helper import assert_in
 
 
 @allure.epic("BankingProject")
@@ -16,7 +15,7 @@ from src.schema.customer import Customer
 @allure.tag("add_customer")
 @allure.label("owner", "Alexey Yumanov")
 @pytest.mark.ui
-class TestAddCustomerPage(BaseUITest):
+class TestAddCustomerPage:
     """Тесты страницы 'Add Customer' в приложении XYZ Bank."""
 
     @allure.title(
@@ -31,7 +30,7 @@ class TestAddCustomerPage(BaseUITest):
         )
 
         names = customer_actions.get_all_first_names()
-        self.assert_in(
+        assert_in(
             customer.first_name,
             names,
             f"Ожидалось, что имя {customer.first_name} появится в списке клиентов",

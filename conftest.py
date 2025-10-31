@@ -1,14 +1,13 @@
 import tempfile
 import uuid
-import pytest
-import allure
 from typing import Any, Generator
+
+import allure
+import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.remote.webdriver import WebDriver
-
-
 from webdriver_manager.chrome import ChromeDriverManager
 
 from src.utils.config import get_test_config

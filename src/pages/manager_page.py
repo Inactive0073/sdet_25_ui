@@ -1,7 +1,7 @@
-from src.pages.base_page import BasePage
 import allure
 
 from src.locators.manager_loc import ManagerLocators as ML
+from src.pages.base_page import BasePage
 
 
 class ManagerPage(BasePage):

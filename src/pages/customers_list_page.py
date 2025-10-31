@@ -1,9 +1,9 @@
-# pages/customers_list_page.py
-from src.pages.base_page import BasePage
-import allure
 from typing import List
 
+import allure
+
 from src.locators.manager_loc import CustomersListLocators as CLL
+from src.pages.base_page import BasePage
 
 
 class CustomersListPage(BasePage):
@@ -20,10 +20,8 @@ class CustomersListPage(BasePage):
         rows = self.find_all(self.CUSTOMER_ROWS)
         names = []
         for r in rows:
-            # FIRST_ROW is a locator tuple (By.XPATH, xpath); unpack when searching inside a row
             cell = r.find_element(*self.FIRST_ROW)
             text = cell.text.strip()
-            # ignore empty cells (could be from non-data rows)
             if text:
                 names.append(text)
         return names

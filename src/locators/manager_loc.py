@@ -20,11 +20,9 @@ class AddCustomerLocators(ManagerLocators):
 
 
 class CustomersListLocators(ManagerLocators):
-    # target rows inside the customers table body to avoid picking up unrelated <tr> elements
     CUSTOMER_ROWS = (By.XPATH, "//table//tbody//tr")
     SEARCH_INPUT = (By.CSS_SELECTOR, "input[ng-model='searchCustomer']")
     FIRST_NAME_HEADER = (By.XPATH, "//thead/tr[1]/td[1]/a")
 
-    # selectors in table
     FIRST_NAME_CELL = (By.XPATH, "./td[1]")
     DELETE_BUTTON = (By.XPATH, ".//button[@ng-click='deleteCust(cust)']")

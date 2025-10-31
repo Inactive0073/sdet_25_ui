@@ -3,9 +3,9 @@ import pytest
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from src.actions.manager_actions import CustomerActions as CA
-from src.schema.customer import Customer
 from src.services.customer_service import find_name_closest_to_average_length
-from .base_ui_test import BaseUITest
+
+from .assert_helper import assert_not_in
 
 
 @allure.epic("BankingProject")
@@ -17,7 +17,7 @@ from .base_ui_test import BaseUITest
 @allure.tag("customer_sorting")
 @allure.label("owner", "Alexey Yumanov")
 @pytest.mark.ui
-class TestDeleteCustomer(BaseUITest):
+class TestDeleteCustomer:
     """Тесты удаления клиентов с тем именем, у которого длина будет ближе
     к среднему арифметическому  в приложении XYZ Bank."""
 
@@ -25,7 +25,6 @@ class TestDeleteCustomer(BaseUITest):
     def test_delete_customer_closest_to_avg(self, driver: WebDriver):
         customer_actions = CA(driver)
 
-        # наполнение тестовыми данными
         customer_actions.ensure_customers_exist(3)
 
         names = customer_actions.get_all_first_names()
@@ -33,7 +32,7 @@ class TestDeleteCustomer(BaseUITest):
         customer_actions.delete_customer_by_name(name_to_delete)
 
         names_after = customer_actions.get_all_first_names()
-        self.assert_not_in(
+        assert_not_in(
             name_to_delete,
             names_after,
             f"Ожидалось, что имя '{name_to_delete}' удалено",

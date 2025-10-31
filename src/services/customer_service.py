@@ -1,6 +1,7 @@
-from typing import List
-import allure
 import statistics
+from typing import List
+
+import allure
 
 
 @allure.step("Поиск имени для удаления из списка {names}")

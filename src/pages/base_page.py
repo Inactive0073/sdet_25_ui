@@ -1,14 +1,15 @@
-from typing import Sequence, TypeVar, Generic
+from typing import Generic, Sequence, TypeVar
+
 import allure
+from selenium.common.exceptions import (
+    ElementClickInterceptedException,
+    TimeoutException,
+)
 from selenium.webdriver import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import (
-    TimeoutException,
-    ElementClickInterceptedException,
-)
+from selenium.webdriver.support.ui import WebDriverWait
 
 PageT = TypeVar("PageT", bound="BasePage")
 

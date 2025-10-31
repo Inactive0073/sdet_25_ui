@@ -1,7 +1,8 @@
 import allure
 
-from .base_page import BasePage
 from src.locators.manager_loc import AddCustomerLocators as ACL
+
+from .base_page import BasePage
 
 
 class AddCustomerPage(BasePage):

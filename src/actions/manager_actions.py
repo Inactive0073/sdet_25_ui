@@ -1,11 +1,11 @@
 import allure
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from src.pages.manager_page import ManagerPage
+from src.data import URLs
 from src.pages.add_customer_page import AddCustomerPage
 from src.pages.customers_list_page import CustomersListPage
+from src.pages.manager_page import ManagerPage
 from src.schema.customer import Customer
-from src.data import URLs
 
 
 class CustomerActions:
@@ -40,7 +40,6 @@ class CustomerActions:
         self.add_customer.fill_last_name(customer.last_name)
         self.add_customer.fill_postal_code(customer.post_code)
         self.add_customer.click_submit()
-        # вернуть текст alert для проверки
         text = self.add_customer.accept_alert_and_get_text()
         return text
 
