@@ -1,0 +1,77 @@
+services:
+  jenkins:
+    container_name: sdet_jenkins
+    build:
+      context: .
+      dockerfile: docker/jenkins/Dockerfile
+    image: sdet/jenkins-local:latest
+    ports:
+      - "8080:8080"
+    environment:
+      JENKINS_ADMIN_ID: admin
+      JENKINS_ADMIN_PASSWORD: admin
+      JENKINS_SEED_JOB_NAME: bankingproject-ui-tests
+      JAVA_OPTS: -Djenkins.install.runSetupWizard=false
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - ./:/workspace
+      - //var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+  selenoid:
+    container_name: sdet_selenoid
+    image: aerokube/selenoid:latest-release
+    profiles: ["ci"]
+    command:
+      - "-conf"
+      - "/etc/selenoid/browsers.json"
+      - "-container-network"
+      - "sdet_ci"
+      - "-limit"
+      - "4"
+      - "-session-attempt-timeout"
+      - "2m"
+      - "-timeout"
+      - "5m"
+    volumes:
+      - ./docker/selenoid/browsers.json:/etc/selenoid/browsers.json:ro
+      - //var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "4444:4444"
+    networks:
+      - ci
+
+  selenoid-ui:
+    container_name: sdet_selenoid_ui
+    image: aerokube/selenoid-ui:latest
+    profiles: ["ci"]
+    command:
+      - "--selenoid-uri"
+      - "http://selenoid:4444"
+    depends_on:
+      - selenoid
+    ports:
+      - "8081:8080"
+    networks:
+      - ci
+
+  autotests:
+    container_name: sdet_autotests
+    profiles: ["ci"]
+    build:
+      context: .
+      dockerfile: docker/autotests/Dockerfile
+    environment:
+      CI: "true"
+      SELENIUM_REMOTE_URL: http://selenoid:4444/wd/hub
+    depends_on:
+      - selenoid
+    networks:
+      - ci
+
+networks:
+  ci:
+    name: sdet_ci
+
+volumes:
+  jenkins_home:
